@@ -4,30 +4,26 @@ import java.util.*;
 public class test {
     public static void main(String[] args) {
         try {
-            // Create a new file named test.txt
             File file = new File("test.txt");
             if (file.createNewFile()) {
-                System.out.println("File created: " + file.getName());
+                System.out.println("File made :D");
             } else {
-                System.out.println("File already exists.");
+                System.out.println("duplicate error :(");
             }
             
-            // List files in the current directory
-            System.out.println("Files in current directory:");
+            System.out.println("files in dir");
             File currentDir = new File(".");
             File[] files = currentDir.listFiles();
             for (File f : files) {
                 System.out.println(f.getName());
             }
             
-            // Add "ruqeg9dshxvz" to the contents of test.txt
-            FileWriter writer = new FileWriter(file, true); // true for append mode
+            FileWriter writer = new FileWriter(file, true); 
             writer.write("ruqeg9dshxvz\n");
             writer.close();
-            System.out.println("Added 'ruqeg9dshxvz' to test.txt");
+            System.out.println("text added :D");
             
-            // Show the contents of test.txt
-            System.out.println("Contents of test.txt:");
+            System.out.println("file contents");
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -35,22 +31,20 @@ public class test {
             }
             reader.close();
             
-            // Delete test.txt
             if (file.delete()) {
-                System.out.println("Deleted the file: " + file.getName());
+                System.out.println("Deleted file :D");
             } else {
-                System.out.println("Failed to delete the file.");
+                System.out.println("delete error :(.");
             }
             
-            // List files in the directory after deletion
-            System.out.println("Files in current directory after deletion:");
+            System.out.println("Files in dir:");
             files = currentDir.listFiles();
             for (File f : files) {
                 System.out.println(f.getName());
             }
             
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("weird error :(");
             e.printStackTrace();
         }
     }
