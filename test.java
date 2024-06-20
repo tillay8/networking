@@ -4,7 +4,7 @@ import java.util.*;
 public class test {
     public static void main(String[] args) {
         try {
-            File file = new File("test.txt");
+            File file = new File("amongus.txt");
             if (file.createNewFile()) {
                 System.out.println("File made :D");
             } else {
