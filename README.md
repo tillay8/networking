@@ -6,6 +6,8 @@ A collection of files I use for different tasks regarding Networking
   requires dependency macchanger which can be installed via your package manager.
   
   Does exactly what it says, and changes your mac adress automatically.
+
+  Can be used to bypass network login screens.
   
 - SecureW2_JoinNow.run
   
