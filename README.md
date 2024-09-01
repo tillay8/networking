@@ -14,3 +14,9 @@ A collection of files I use for different tasks regarding Networking
   allows the user to connect to university eduoroam wifi.
   
   can be downloaded from other sites but kinda hard to find
+
+- livechat.py
+
+  simple tool for communication on a ssh server
+
+  made to feel like a discord tui
