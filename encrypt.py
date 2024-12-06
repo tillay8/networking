@@ -2,8 +2,12 @@ from Crypto.Cipher import AES  # sudo pacman -S python-pycryptodome
 from Crypto.Util.Padding import pad, unpad
 from hashlib import sha256
 import subprocess, base64, os, sys
-
-password = sys.argv[1] if len(sys.argv) > 1 else "amongus_sus_meow"
+password_file_path = "/home/tilley/tilcrypt/password.txt"
+password = (
+    sys.argv[1] if len(sys.argv) > 1 
+    else open(password_file_path).read().strip() if os.path.isfile(password_file_path)
+    else input("Input password: ")
+)
 
 def copy_to_clipboard(text):
     if os.environ.get("XDG_SESSION_TYPE") == "wayland" and subprocess.check_output(["which", "wl-copy"]):
