@@ -3,7 +3,7 @@ from Crypto.Util.Padding import pad, unpad
 from hashlib import sha256
 import subprocess, base64, os, platform
 
-password = "carter_is_the_best_fr_fr"
+password = "amongus_sus_meow"
 
 def copy_to_clipboard(text):
     if subprocess.check_output(["which", "wl-copy"]):
