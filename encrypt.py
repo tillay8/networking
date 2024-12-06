@@ -13,6 +13,22 @@ def copy_to_clipboard(text):
             subprocess.run(["wl-copy"], input=text.encode())
         elif os.environ.get("XDG_SESSION_TYPE") == "x11" and subprocess.check_output(["which", "xclip"]):
             subprocess.run(["xclip", "-selection", "clipboard"], input=text.encode())
+def process_clipboard_content(content, password, copy=False):
+    if content.startswith("&&"):
+        decrypted_text = decrypt(content[2:], password)
+        if decrypted_text is None:
+            print("Incorrect password.")
+        else:
+            print(f"Decrypted text: {decrypted_text}")
+        if copy:
+            copy_to_clipboard("")
+    else:
+        encrypted_text = encrypt(input("Text Input: "), password)
+        if copy:
+            copy_to_clipboard("&&" + encrypted_text)
+            print("Encrypted text copied to clipboard.")
+        else:
+            print("&&" + encrypted_text)
 def encrypt(plaintext, passphrase):
     key, iv = sha256(passphrase.encode()).digest(), os.urandom(AES.block_size)
     ciphertext = iv + AES.new(key, AES.MODE_CBC, iv).encrypt(pad(plaintext.encode(), AES.block_size))
@@ -25,31 +41,14 @@ def decrypt(ciphertext, passphrase):
         return unpad(AES.new(key, AES.MODE_CBC, iv).decrypt(ciphertext), AES.block_size).decode()
     except (ValueError, KeyError):
         return None
+
 try:
     if os.environ.get("XDG_SESSION_TYPE") == "wayland" and subprocess.check_output(["which", "wl-copy"]):
         clipboard_content = subprocess.getoutput("wl-paste")
     elif os.environ.get("XDG_SESSION_TYPE") == "x11" and subprocess.check_output(["which", "xclip"]):
         clipboard_content = subprocess.getoutput("xclip -o -selection clipboard")
-    if clipboard_content.startswith("&&"):
-        decrypted_text = decrypt(clipboard_content[2:], password)
-        if decrypted_text is None:
-            print("Incorrect password.")
-        else:
-            print(f"Decrypted text: {decrypted_text}")
-        copy_to_clipboard("")
-    else:
-        encrypted_text = encrypt(input("Input Text: "), password)
-        copy_to_clipboard("&&" + encrypted_text)
-        print("Encrypted text copied to clipboard.")
+    process_clipboard_content(clipboard_content, password, copy=True)
 except subprocess.CalledProcessError:
-    print("Warning: copy functionality missing")
-    clipboard_content = input("input manually: ")
-    if clipboard_content.startswith("&&"):
-        decrypted_text = decrypt(clipboard_content[2:], password)
-        if decrypted_text is None:
-                print("Incorrect password.")
-        else:
-                print(f"Decrypted text: {decrypted_text}")
-    else:
-        encrypted_text = encrypt(clipboard_content, password)
-        print("&&"+encrypted_text)
+    print("Warning: linux/DE/xclip/wl-copy missing")
+    clipboard_content = input("input text manually: ")
+    process_clipboard_content(clipboard_content, password)
